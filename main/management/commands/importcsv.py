@@ -32,7 +32,7 @@ class Command(BaseCommand):
                     'difficulty': [Level.DIFFICULTY_DICT.get(d, 0) for d in row[4].split(';')], 
                     'category': [Level.CATEGORY_DICT.get(d, 0) for d in row[5].split(';')],
                     'file_size': row[7],
-                    'link': 'http://knyttlevels.com/levels/' + urllib.parse.quote(row[0]), # TODO: more reliable source
+                    'link': row[0],
                     'icon': row[9],
                     'format': row[6]
                 }
