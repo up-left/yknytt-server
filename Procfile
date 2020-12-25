@@ -1,0 +1,1 @@
+web: gunicorn yknytt_server.wsgi --log-file -
