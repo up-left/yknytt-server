@@ -29,8 +29,8 @@ class Level(models.Model):
     level_hash = models.BinaryField(max_length=64, unique=True)
 
     size = models.IntegerField(choices=SIZE_CHOICES, db_index=True)
-    difficulty = ChoiceArrayField(models.IntegerField(choices=DIFFICULTY_CHOICES), size=8, db_index=True)
-    category = ChoiceArrayField(models.IntegerField(choices=CATEGORY_CHOICES), size=8, db_index=True)
+    difficulty = ArrayField(models.IntegerField(choices=DIFFICULTY_CHOICES), size=8, db_index=True)
+    category = ArrayField(models.IntegerField(choices=CATEGORY_CHOICES), size=8, db_index=True)
 
     file_size = models.IntegerField()
     link = models.CharField(max_length=256)
