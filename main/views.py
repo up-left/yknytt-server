@@ -41,28 +41,41 @@ def rate(request):
     request_data = json.loads(request.body.decode('utf-8'))
     response_data = {}
 
-    level_id = request_data.get('level_id', None)
+    level_name = request_data.get('name', None)
+    level_author = request_data.get('author', None)
     uid = request_data.get('uid', None)
     platform = request_data.get('platform', None)
     action = request_data.get('action', None)
+    cutscene = request_data.get('cutscene', None)
 
-    if level_id is None or uid is None or action is None:
+    if level_name is None or level_author is None or uid is None or action is None:
         return JsonResponse({'message': 'missing parameter'}, status=422)
 
-    level_id = int(level_id)
+    level = get_object_or_404(Level, name=level_name, author=level_author)
     action = int(action)
-
-    level = Level.objects.filter(id=level_id).first()
-    if level is None:
-        return JsonResponse({'message': 'level not found'}, status=422)
+    cutscene_action = action == 5 or action == 6
 
     rate_field = Rate.ACTION_DICT.get(action, None)
-    if rate_field is None:
+    if rate_field is None and not cutscene_action:
         return JsonResponse({'message': 'action not found'}, status=422)
 
-    _, created = Rate.objects.get_or_create(level=level, level_hash=level.level_hash, uid=uid, platform=platform, action=action)
+    if cutscene_action:
+        if cutscene is None:
+            return JsonResponse({'message': 'missing cutscene parameter'}, status=422)
+        cutscene_queryset = Cutscene.objects.filter(level=level, name=cutscene, ending=action == 6)
+        if cutscene_queryset.count() != 1:
+            return JsonResponse({'message': 'cutscene not found'}, status=422)
+
+    _, created = Rate.objects.get_or_create(level=level, level_hash=level.level_hash, uid=uid, platform=platform, action=action, cutscene=cutscene)
     if created:
-        LevelRating.objects.filter(pk=level_id).update(**{rate_field: F(rate_field) + 1})
+        if rate_field is not None:
+            LevelRating.objects.filter(level=level).update(**{rate_field: F(rate_field) + 1})
+        else:
+            cutscene_queryset.update(counter=F("counter") + 1)
+
+            if action == 6 and not level.levelrating.verified:
+                if not Cutscene.objects.filter(level=level, ending=True, counter=0).exists():
+                    LevelRating.objects.filter(level=level).update(verified=True)
 
     return JsonResponse({'action': action, 'added': 1 if created else 0}, status=200)
 

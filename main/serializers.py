@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from . import models
+from main.models import *
 
 
 class LevelSerializer(serializers.ModelSerializer):
@@ -9,11 +9,20 @@ class LevelSerializer(serializers.ModelSerializer):
     downvotes = serializers.IntegerField(source='levelrating.downvotes')
 
     class Meta:
-        model = models.Level
+        model = Level
         fields = ('id', 'name', 'author', 'description', 'file_size', 'link', 'icon', 'downloads', 'upvotes', 'downvotes')
 
 
-class LevelRatingSerializer(serializers.ModelSerializer):
+class CutsceneSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.LevelRating
-        fields = ('level', 'downloads', 'upvotes', 'downvotes')
+        model = Cutscene
+        fields = ('name', 'ending', 'counter')
+
+
+class LevelRatingSerializer(serializers.ModelSerializer):
+    cutscenes = CutsceneSerializer(source='level.cutscene_set', many=True)
+
+    class Meta:
+        model = LevelRating
+        fields = ('downloads', 'upvotes', 'downvotes', 'cutscenes',
+            'power0', 'power1', 'power2', 'power3', 'power4', 'power5', 'power6', 'power7', 'power8', 'power9', 'power10', 'power11', 'power12')

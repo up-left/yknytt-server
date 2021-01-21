@@ -33,7 +33,7 @@ class Command(BaseCommand):
                     'category': [Level.CATEGORY_DICT.get(d, 0) for d in row[5].split(';')],
                     'file_size': row[7],
                     'link': row[0],
-                    'icon': row[9],
+                    'icon': row[11],
                     'format': row[6]
                 }
                 if options['update']:
@@ -44,6 +44,15 @@ class Command(BaseCommand):
                 if created:
                     new_counter += 1
                     LevelRating.objects.create(level=level)
+
+                if row[9]:
+                    Cutscene.objects.filter(level=level, ending=True).exclude(name__in=row[9].split(';')).delete()
+                    for cutscene in row[9].split(';'):
+                        Cutscene.objects.get_or_create(level=level, name=cutscene, ending=True)
+                if row[10]:
+                    Cutscene.objects.filter(level=level, ending=False).exclude(name__in=row[10].split(';')).delete()
+                    for cutscene in row[10].split(';'):
+                        Cutscene.objects.get_or_create(level=level, name=cutscene, ending=False)
 
                 total_counter += 1
 
