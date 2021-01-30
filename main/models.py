@@ -97,6 +97,7 @@ class Rate(models.Model):
     ACTION_CHOICES = [(0, 'Undefined'), (1, 'Download'), (2, 'Upvote'), (3, 'Downvote'), (4, 'Complain'), (5, 'Cutscene'), (6, 'Ending'),
                       (100, 'Run'), (101, 'Climb'), (102, 'Double Jump'), (103, 'High Jump'), (104, 'Eye'), (105, 'Enemy Detector'),
                       (106, 'Umbrella'), (107, 'Hologram'), (108, 'Red Key'), (109, 'Yellow Key'), (110, 'Blue Key'), (111, 'Purple Key'), (112, 'Map')]
+    ACTION_CHOICES_DICT = dict(ACTION_CHOICES)
 
     ACTION_DICT = {1: 'downloads', 2: 'upvotes', 3: 'downvotes', 4: 'complains',
                    100: 'power0', 101: 'power1', 102: 'power2', 103: 'power3', 104: 'power4', 105: 'power5',
@@ -114,4 +115,4 @@ class Rate(models.Model):
         constraints = [models.UniqueConstraint(fields=['uid', 'level', 'action', 'cutscene'], name='unique_user_rate')]
 
     def __str__(self):
-        return f'{Rate.ACTION_CHOICES[self.action][1]} {self.cutscene or ""} {self.level} {self.time.strftime("%Y.%m.%d %H:%M:%S %z")}'
+        return f'{Rate.ACTION_CHOICES_DICT[self.action]} {self.cutscene or ""} {self.level} {self.time.strftime("%Y.%m.%d %H:%M:%S %z")}'
