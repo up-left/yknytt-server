@@ -62,7 +62,7 @@ def rate(request):
     if cutscene_action:
         if cutscene is None:
             return JsonResponse({'message': 'missing cutscene parameter'}, status=422)
-        cutscene_queryset = Cutscene.objects.filter(level=level, name=cutscene, ending=action == 6)
+        cutscene_queryset = Cutscene.objects.filter(level=level, name__iexact=cutscene, ending=action == 6)
         if cutscene_queryset.count() != 1:
             return JsonResponse({'message': 'cutscene not found'}, status=422)
 

@@ -7,10 +7,11 @@ class LevelSerializer(serializers.ModelSerializer):
     downloads = serializers.IntegerField(source='levelrating.downloads')
     upvotes = serializers.IntegerField(source='levelrating.upvotes')
     downvotes = serializers.IntegerField(source='levelrating.downvotes')
+    verified = serializers.IntegerField(source='levelrating.verified')
 
     class Meta:
         model = Level
-        fields = ('name', 'author', 'description', 'file_size', 'link', 'icon', 'downloads', 'upvotes', 'downvotes')
+        fields = ('name', 'author', 'description', 'file_size', 'link', 'icon', 'downloads', 'upvotes', 'downvotes', 'verified')
 
 
 class CutsceneSerializer(serializers.ModelSerializer):
