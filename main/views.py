@@ -66,7 +66,7 @@ def rate(request):
         if cutscene_queryset.count() != 1:
             return JsonResponse({'message': 'cutscene not found'}, status=422)
 
-    _, created = Rate.objects.get_or_create(level=level, level_hash=level.level_hash, uid=uid, platform=platform, action=action, cutscene=cutscene)
+    _, created = Rate.objects.get_or_create({'name': level_name, 'author': level_author, 'platform': platform}, level=level, uid=uid, action=action, cutscene=cutscene)
     if created:
         if rate_field is not None:
             LevelRating.objects.filter(level=level).update(**{rate_field: F(rate_field) + 1})

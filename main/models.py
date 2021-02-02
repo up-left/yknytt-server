@@ -29,11 +29,9 @@ class Level(models.Model):
     DIFFICULTY_DICT = {d: n for n, d in DIFFICULTY_CHOICES}
     CATEGORY_DICT = {d: n for n, d in CATEGORY_CHOICES}
 
-    name = models.CharField(max_length=256, db_index=True)
-    author = models.CharField(max_length=128, db_index=True)
+    name = models.CharField(max_length=40, db_index=True)
+    author = models.CharField(max_length=40, db_index=True)
     description = models.CharField(max_length=512)
-
-    level_hash = models.BinaryField(max_length=64, unique=True)
 
     size = models.IntegerField(choices=SIZE_CHOICES, db_index=True)
     difficulty = ChoiceArrayField(models.IntegerField(choices=DIFFICULTY_CHOICES), size=8, db_index=True)
@@ -75,9 +73,10 @@ class LevelRating(models.Model):
     power12 = models.IntegerField(default=0)
 
     verified = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
 
     def __str__(self):
-    	return f'{"[*]" if self.verified else "[ ]"} {self.level} +{self.upvotes}/-{self.downvotes} v{self.downloads}'
+    	return f'{"[*]" if self.verified else "[ ]"} {"[+]" if self.approved else "[ ]"} {self.level} +{self.upvotes}/-{self.downvotes} v{self.downloads}'
 
 
 class Cutscene(models.Model):
@@ -104,7 +103,8 @@ class Rate(models.Model):
                    106: 'power6', 107: 'power7', 108: 'power8', 109: 'power9', 110: 'power10', 111: 'power11', 112: 'power12'}
 
     level = models.ForeignKey(Level, null=True, on_delete=models.SET_NULL)
-    level_hash = models.BinaryField(max_length=64)
+    name = models.CharField(max_length=40, default='')
+    author = models.CharField(max_length=40, default='')
     uid = models.UUIDField()
     platform = models.CharField(max_length=16)
     action = models.IntegerField(choices=ACTION_CHOICES)
@@ -115,4 +115,4 @@ class Rate(models.Model):
         constraints = [models.UniqueConstraint(fields=['uid', 'level', 'action', 'cutscene'], name='unique_user_rate')]
 
     def __str__(self):
-        return f'{Rate.ACTION_CHOICES_DICT[self.action]} {self.cutscene or ""} {self.level} {self.time.strftime("%Y.%m.%d %H:%M:%S %z")}'
+        return f'{Rate.ACTION_CHOICES_DICT[self.action]} {self.cutscene or ""} #{self.level_id} {self.name} ({self.author}) {self.time.strftime("%Y.%m.%d %H:%M:%S %z")}'

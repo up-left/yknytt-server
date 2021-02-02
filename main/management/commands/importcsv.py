@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
 import csv
-import hashlib
 import urllib.parse
 from main.models import *
 
@@ -19,15 +18,10 @@ class Command(BaseCommand):
         with open(options['filename'], 'rt') as f:
             reader = csv.reader(f)
             for row in reader:
-                m = hashlib.sha256()
-                m.update((row[1] + row[2]).encode())
-                level_hash = m.digest()
-
                 level = {
                     'name': row[1],
                     'author': row[2],
                     'description': row[8], 
-                    'level_hash': level_hash,
                     'size': Level.SIZE_DICT.get(row[3], 0), 
                     'difficulty': [Level.DIFFICULTY_DICT.get(d, 0) for d in row[4].split(';')], 
                     'category': [Level.CATEGORY_DICT.get(d, 0) for d in row[5].split(';')],
@@ -37,9 +31,9 @@ class Command(BaseCommand):
                     'format': row[6]
                 }
                 if options['update']:
-                    level, created = Level.objects.update_or_create(level, level_hash=level_hash)
+                    level, created = Level.objects.update_or_create(level, name=row[1], author=row[2])
                 else:
-                    level, created = Level.objects.get_or_create(level, level_hash=level_hash)
+                    level, created = Level.objects.get_or_create(level, name=row[1], author=row[2])
 
                 if created:
                     new_counter += 1
