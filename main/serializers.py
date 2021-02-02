@@ -7,8 +7,8 @@ class LevelSerializer(serializers.ModelSerializer):
     downloads = serializers.IntegerField(source='levelrating.downloads')
     upvotes = serializers.IntegerField(source='levelrating.upvotes')
     downvotes = serializers.IntegerField(source='levelrating.downvotes')
-    verified = serializers.IntegerField(source='levelrating.verified')
-    approved = serializers.IntegerField(source='levelrating.approved')
+    verified = serializers.BooleanField(source='levelrating.verified')
+    approved = serializers.BooleanField(source='levelrating.approved')
 
     class Meta:
         model = Level
