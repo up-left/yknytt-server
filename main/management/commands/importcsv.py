@@ -39,11 +39,11 @@ class Command(BaseCommand):
                     new_counter += 1
                     LevelRating.objects.create(level=level)
 
-                if (created or options['update']) and row[9]:
+                if created or options['update']:
                     Cutscene.objects.filter(level=level, ending=True).exclude(name__in=row[9].split(';')).delete()
                     for cutscene in row[9].split(';'):
                         Cutscene.objects.get_or_create(level=level, name=cutscene, ending=True)
-                if (created or options['update']) and row[10]:
+                if created or options['update']:
                     Cutscene.objects.filter(level=level, ending=False).exclude(name__in=row[10].split(';')).delete()
                     for cutscene in row[10].split(';'):
                         Cutscene.objects.get_or_create(level=level, name=cutscene, ending=False)
