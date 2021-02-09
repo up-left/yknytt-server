@@ -40,12 +40,15 @@ class Command(BaseCommand):
                     LevelRating.objects.create(level=level)
 
                 if created or options['update']:
-                    Cutscene.objects.filter(level=level, ending=True).exclude(name__in=row[9].split(';')).delete()
-                    for cutscene in row[9].split(';'):
+                    cutscenes = row[9].split(';') if row[9] else []
+                    Cutscene.objects.filter(level=level, ending=True).exclude(name__in=cutscenes).delete()
+                    for cutscene in cutscenes:
                         Cutscene.objects.get_or_create(level=level, name=cutscene, ending=True)
+
                 if created or options['update']:
-                    Cutscene.objects.filter(level=level, ending=False).exclude(name__in=row[10].split(';')).delete()
-                    for cutscene in row[10].split(';'):
+                    cutscenes = row[10].split(';') if row[10] else []
+                    Cutscene.objects.filter(level=level, ending=False).exclude(name__in=cutscenes).delete()
+                    for cutscene in cutscenes:
                         Cutscene.objects.get_or_create(level=level, name=cutscene, ending=False)
 
                 total_counter += 1
