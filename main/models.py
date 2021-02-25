@@ -43,7 +43,6 @@ class Level(models.Model):
     format = models.IntegerField()
 
     class Meta:
-        ordering = ['-levelrating__downloads', 'pk']
         constraints = [models.UniqueConstraint(fields=['name', 'author'], name='unique_level')]
 
     def __str__(self):

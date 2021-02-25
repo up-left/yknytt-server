@@ -1,7 +1,7 @@
 from rest_framework import generics
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import F
+from django.db.models import F, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 import json
@@ -13,12 +13,14 @@ class LevelList(generics.ListAPIView):
     serializer_class = LevelSerializer
     queryset = Level.objects.all()
 
+    ORDER_FIELDS = {3: 'name', 4: 'author', 5: '-levelrating__downloads', 6: '-levelrating__upvotes', 7: '-file_size'}
+
     def get_queryset(self):
         queryset = super().get_queryset()
 
         text = self.request.query_params.get('text', None)
         if text:
-            queryset = queryset.filter(name__icontains=text)
+            queryset = queryset.filter(Q(name__icontains=text) | Q(author__icontains=text))
 
         size = self.request.query_params.get('size', None)
         if size:
@@ -31,6 +33,10 @@ class LevelList(generics.ListAPIView):
         category = self.request.query_params.get('category', None)
         if category:
             queryset = queryset.filter(category__contains=[int(category)])
+
+        order = self.request.query_params.get('order', None)
+        if order:
+            queryset = queryset.order_by(LevelList.ORDER_FIELDS[int(order)], 'pk')
 
         return queryset
 
