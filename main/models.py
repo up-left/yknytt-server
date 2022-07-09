@@ -116,4 +116,4 @@ class Rate(models.Model):
         constraints = [models.UniqueConstraint(fields=['uid', 'level', 'action', 'cutscene'], name='unique_user_rate')]
 
     def __str__(self):
-        return f'{Rate.ACTION_CHOICES_DICT[self.action]} {self.cutscene or ""} #{self.level_id} {self.name} ({self.author}) {self.time.strftime("%Y.%m.%d %H:%M:%S %z")}'
+        return f'{Rate.ACTION_CHOICES_DICT[self.action]} {self.cutscene if self.action == 5 or self.action == 6 else ""} #{self.level_id} {self.name} ({self.author}) {self.time.strftime("%Y.%m.%d %H:%M:%S")}'
