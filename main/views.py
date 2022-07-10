@@ -5,6 +5,7 @@ from django.db.models import F, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 import json
+import time
 from main.models import *
 from main.serializers import *
 
@@ -60,6 +61,7 @@ def rate(request):
     level = get_object_or_404(Level, name=level_name, author=level_author)
     action = int(action)
     cutscene_action = action == 5 or action == 6
+    launch_action = action == 7 or action == 8
 
     rate_field = Rate.ACTION_DICT.get(action, None)
     if rate_field is None and not cutscene_action:
@@ -71,6 +73,9 @@ def rate(request):
         cutscene_queryset = Cutscene.objects.filter(level=level, name__iexact=cutscene, ending=action == 6)
         if cutscene_queryset.count() != 1:
             return JsonResponse({'message': 'cutscene not found'}, status=422)
+
+    if launch_action:
+        cutscene = str(time.time()) # to provide unique key
 
     _, created = Rate.objects.get_or_create({'name': level_name, 'author': level_author, 'platform': platform}, level=level, uid=uid, action=action, cutscene=cutscene)
     if created:
