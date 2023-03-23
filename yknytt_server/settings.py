@@ -30,7 +30,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['*'] # fix later
+CSRF_TRUSTED_ORIGINS = ['https://yknytt.fly.dev', 'https://127.0.0.1'] # fix later
 
 
 # Application definition
