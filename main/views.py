@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import F, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from ipware import get_client_ip
 import json
 import time
 from main.models import *
@@ -54,6 +55,7 @@ def rate(request):
     platform = request_data.get('platform', None)
     action = request_data.get('action', None)
     cutscene = request_data.get('cutscene', None)
+    ip, _ = get_client_ip(request)
 
     if level_name is None or level_author is None or uid is None or action is None:
         return JsonResponse({'message': 'missing parameter'}, status=422)
@@ -77,7 +79,9 @@ def rate(request):
     if launch_action:
         cutscene = str(time.time()) # to provide unique key
 
-    _, created = Rate.objects.get_or_create({'name': level_name, 'author': level_author, 'platform': platform}, level=level, uid=uid, action=action, cutscene=cutscene)
+    _, created = Rate.objects.get_or_create(
+        {'name': level_name, 'author': level_author, 'platform': platform, 'ip': ip}, 
+        level=level, uid=uid, action=action, cutscene=cutscene)
     if created:
         if rate_field is not None:
             LevelRating.objects.filter(level=level).update(**{rate_field: F(rate_field) + 1})

@@ -29,6 +29,7 @@ class Level(models.Model):
     DIFFICULTY_DICT = {d: n for n, d in DIFFICULTY_CHOICES}
     CATEGORY_DICT = {d: n for n, d in CATEGORY_CHOICES}
 
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=40, db_index=True)
     author = models.CharField(max_length=40, db_index=True)
     description = models.CharField(max_length=512)
@@ -81,6 +82,7 @@ class LevelRating(models.Model):
 
 
 class Cutscene(models.Model):
+    id = models.AutoField(primary_key=True)
     level = models.ForeignKey(Level, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, db_index=True)
     ending = models.BooleanField()
@@ -103,6 +105,7 @@ class Rate(models.Model):
                    100: 'power0', 101: 'power1', 102: 'power2', 103: 'power3', 104: 'power4', 105: 'power5',
                    106: 'power6', 107: 'power7', 108: 'power8', 109: 'power9', 110: 'power10', 111: 'power11', 112: 'power12'}
 
+    id = models.AutoField(primary_key=True)
     level = models.ForeignKey(Level, null=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=40, default='')
     author = models.CharField(max_length=40, default='')
@@ -111,9 +114,10 @@ class Rate(models.Model):
     action = models.IntegerField(choices=ACTION_CHOICES)
     cutscene = models.CharField(max_length=64, null=True, default=None)
     time = models.DateTimeField(auto_now=True)
+    ip = models.CharField(max_length=48, null=True, default=None)
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['uid', 'level', 'action', 'cutscene'], name='unique_user_rate')]
 
     def __str__(self):
-        return f'{Rate.ACTION_CHOICES_DICT[self.action]} {self.cutscene if self.action == 5 or self.action == 6 else ""} #{self.level_id} {self.name} ({self.author}) {self.time.strftime("%Y.%m.%d %H:%M:%S")}'
+        return f'{Rate.ACTION_CHOICES_DICT[self.action]} {self.cutscene if self.action in (5, 6) else ""} #{self.level_id} {self.name} ({self.author}) {self.time.strftime("%Y.%m.%d %H:%M:%S")}'
