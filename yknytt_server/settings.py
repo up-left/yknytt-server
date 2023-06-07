@@ -32,7 +32,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ')
 
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS').split(' ')
 
-COMMAND_CHOICES = ( ('collectstatic', "Collectstatic"), ('loaddata', "Loaddata"), ('dumpdata', "Dumpdata"), ("importcsv worlds.csv", "Import knyttlevels"), ("importcsv worlds-egomassive.csv", "Import levels.egomassive"))
+COMMAND_CHOICES = ( ('collectstatic', "Collectstatic"), ('loaddata', "Loaddata"), ('dumpdata', "Dumpdata"), ("importcsv", "Import levels"))
 
 # Application definition
 
@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "mcadmin",
     'django_run_command'
 ]
 
