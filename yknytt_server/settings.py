@@ -28,9 +28,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'm%3gav8ie3(_ys83gx&lyx=vq5dp6%
 #DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(' ')
 
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS').split(' ')
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://*').split(' ')
 
 COMMAND_CHOICES = ( ('collectstatic', "Collectstatic"), ('loaddata', "Loaddata"), ('dumpdata', "Dumpdata"), ("importcsv", "Import levels"))
 
@@ -99,12 +99,14 @@ else:
 
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'ENGINE': 'django.db.backends.mysql', 
             'NAME': 'knyttlevels',
             'USER': 'ykuser',
             'PASSWORD': '000000',
             'HOST': '127.0.0.1',
-            'PORT': '5432',
+#            'PORT': '5432',
+            'PORT': '3306',
         },
     }
 

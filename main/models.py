@@ -1,23 +1,38 @@
 from django.db import models
 from django import forms
-from django.contrib.postgres.fields import ArrayField
 
 
-class ChoiceArrayField(ArrayField):
+class MyChoiceField(forms.MultipleChoiceField):
+    def __init__(self, **kwargs):
+        del kwargs['coerce']
+        super().__init__(**kwargs)
+
+
+class ChoiceBitField(models.IntegerField):
     def formfield(self, **kwargs):
         defaults = {
-            'form_class': forms.MultipleChoiceField,
-            'choices': self.base_field.choices,
+            'choices_form_class': MyChoiceField,
+            'choices': self.choices,
+            'required': False,
             'widget': forms.CheckboxSelectMultiple,
         }
         defaults.update(kwargs)
-        return super(ArrayField, self).formfield(**defaults)
+        return super().formfield(**defaults)
+
+    def from_db_value(self, value, expression, connection):
+        return [i for i, _ in self.choices if (1 << i) & value]
+
+    def validate(self, value, model_instance):
+        int_choices = [c for c, _ in self.choices]
+        return all(i in int_choices for i in value)
+
+    validators = []
+
+    def get_db_prep_value(self, value, connection, prepared=False):
+        return value if isinstance(value, int) else sum(1 << int(i) for i in value)
 
     def to_python(self, value):
-        res = super().to_python(value)
-        if isinstance(res, list):
-            value = [self.base_field.to_python(val) for val in res]
-        return value
+        return self.from_db_value(value, None, None) if isinstance(value, int) else [int(i) for i in value]
 
 
 class Level(models.Model):
@@ -35,8 +50,8 @@ class Level(models.Model):
     description = models.CharField(max_length=512)
 
     size = models.IntegerField(choices=SIZE_CHOICES, db_index=True)
-    difficulty = ChoiceArrayField(models.IntegerField(choices=DIFFICULTY_CHOICES), size=8, db_index=True)
-    category = ChoiceArrayField(models.IntegerField(choices=CATEGORY_CHOICES), size=8, db_index=True)
+    difficulty = ChoiceBitField(choices=DIFFICULTY_CHOICES, db_index=True)
+    category = ChoiceBitField(choices=CATEGORY_CHOICES, db_index=True)
 
     file_size = models.IntegerField()
     link = models.CharField(max_length=256)

@@ -30,11 +30,11 @@ class LevelList(generics.ListAPIView):
 
         difficulty = self.request.query_params.get('difficulty', None)
         if difficulty:
-            queryset = queryset.filter(difficulty__contains=[int(difficulty)])
+            queryset = queryset.annotate(filt = F('difficulty').bitand(1 << int(difficulty))).filter(filt__gt=0)
             
         category = self.request.query_params.get('category', None)
         if category:
-            queryset = queryset.filter(category__contains=[int(category)])
+            queryset = queryset.annotate(filt = F('category').bitand(1 << int(category))).filter(filt__gt=0)
 
         order = self.request.query_params.get('order', None)
         if order:
