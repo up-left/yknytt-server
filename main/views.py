@@ -62,8 +62,8 @@ def rate(request):
 
     level = get_object_or_404(Level, name=level_name, author=level_author)
     action = int(action)
-    cutscene_action = action == 5 or action == 6
-    launch_action = action == 7 or action == 8
+    cutscene_action = action in (5, 6)
+    launch_action = action in (7, 8, 9)
 
     rate_field = Rate.ACTION_DICT.get(action, None)
     if rate_field is None and not cutscene_action:

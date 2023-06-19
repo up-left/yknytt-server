@@ -74,6 +74,7 @@ class LevelRating(models.Model):
     complains = models.IntegerField(default=0)
     enters = models.IntegerField(default=0)
     exits = models.IntegerField(default=0)
+    winexits = models.IntegerField(default=0)
 
     power0 = models.IntegerField(default=0)
     power1 = models.IntegerField(default=0)
@@ -111,12 +112,13 @@ class Cutscene(models.Model):
 
 
 class Rate(models.Model):
-    ACTION_CHOICES = [(0, 'Undefined'), (1, 'Download'), (2, 'Upvote'), (3, 'Downvote'), (4, 'Complain'), (5, 'Cutscene'), (6, 'Ending'), (7, 'Enter'), (8, 'Exit'),
+    ACTION_CHOICES = [(0, 'Undefined'), (1, 'Download'), (2, 'Upvote'), (3, 'Downvote'), (4, 'Complain'), 
+                      (5, 'Cutscene'), (6, 'Ending'), (7, 'Enter'), (8, 'Exit'), (9, 'Win Exit'),
                       (100, 'Run'), (101, 'Climb'), (102, 'Double Jump'), (103, 'High Jump'), (104, 'Eye'), (105, 'Enemy Detector'),
                       (106, 'Umbrella'), (107, 'Hologram'), (108, 'Red Key'), (109, 'Yellow Key'), (110, 'Blue Key'), (111, 'Purple Key'), (112, 'Map')]
     ACTION_CHOICES_DICT = dict(ACTION_CHOICES)
 
-    ACTION_DICT = {1: 'downloads', 2: 'upvotes', 3: 'downvotes', 4: 'complains', 7: 'enters', 8: 'exits',
+    ACTION_DICT = {1: 'downloads', 2: 'upvotes', 3: 'downvotes', 4: 'complains', 7: 'enters', 8: 'exits', 9: 'winexits',
                    100: 'power0', 101: 'power1', 102: 'power2', 103: 'power3', 104: 'power4', 105: 'power5',
                    106: 'power6', 107: 'power7', 108: 'power8', 109: 'power9', 110: 'power10', 111: 'power11', 112: 'power12'}
 
