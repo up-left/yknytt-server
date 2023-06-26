@@ -66,6 +66,9 @@ class Level(models.Model):
 
 
 class LevelRating(models.Model):
+    STATUS_CHOICES = [(0, 'Not Verified'), (1, 'Hard to Verify'), (2, 'Broken'), (3, 'Almost Broken'), (4, 'Partially Playable'), (5, 'Almost Playable'), (6, 'Playable')]
+    STATUS_CHOICES_DICT = dict(STATUS_CHOICES)
+
     level = models.OneToOneField(Level, on_delete=models.CASCADE, primary_key=True)
     
     downloads = models.IntegerField(default=0)
@@ -90,11 +93,11 @@ class LevelRating(models.Model):
     power11 = models.IntegerField(default=0)
     power12 = models.IntegerField(default=0)
 
+    status = models.IntegerField(default=0, choices=STATUS_CHOICES)
     verified = models.BooleanField(default=False)
-    approved = models.BooleanField(default=False)
 
     def __str__(self):
-    	return f'{"[*]" if self.verified else "[ ]"} {"[+]" if self.approved else "[ ]"} {self.level} +{self.upvotes}/-{self.downvotes} v{self.downloads}'
+    	return f'{"[+]" if self.verified else "[ ]"} {LevelRating.STATUS_CHOICES_DICT[self.status]} {self.level} +{self.upvotes}/-{self.downvotes} v{self.downloads}'
 
 
 class Cutscene(models.Model):

@@ -88,7 +88,7 @@ def rate(request):
         else:
             cutscene_queryset.update(counter=F("counter") + 1)
 
-            if action == 6 and not level.levelrating.verified:
+            if action in (6, 9) and not level.levelrating.verified:
                 if not Cutscene.objects.filter(level=level, ending=True, counter=0).exists():
                     LevelRating.objects.filter(level=level).update(verified=True)
 
