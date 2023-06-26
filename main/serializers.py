@@ -8,12 +8,12 @@ class LevelSerializer(serializers.ModelSerializer):
     upvotes = serializers.IntegerField(source='levelrating.upvotes')
     downvotes = serializers.IntegerField(source='levelrating.downvotes')
     complains = serializers.IntegerField(source='levelrating.complains')
-    verified = serializers.BooleanField(source='levelrating.verified')
-    approved = serializers.BooleanField(source='levelrating.approved')
+    autoverified = serializers.BooleanField(source='levelrating.verified')
+    status = serializers.BooleanField(source='levelrating.status')
 
     class Meta:
         model = Level
-        fields = ('name', 'author', 'description', 'file_size', 'link', 'icon', 'downloads', 'upvotes', 'downvotes', 'complains', 'verified', 'approved')
+        fields = ('name', 'author', 'description', 'file_size', 'link', 'icon', 'downloads', 'upvotes', 'downvotes', 'complains', 'autoverified', 'status')
 
 
 class CutsceneSerializer(serializers.ModelSerializer):
