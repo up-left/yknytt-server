@@ -85,7 +85,7 @@ def rate(request):
     if created:
         if rate_field is not None:
             LevelRating.objects.filter(level=level).update(**{rate_field: F(rate_field) + 1})
-        else:
+        elif cutscene_action:
             cutscene_queryset.update(counter=F("counter") + 1)
 
         if action in (6, 9) and not level.levelrating.verified:
