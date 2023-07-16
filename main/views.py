@@ -66,7 +66,7 @@ def rate(request):
     launch_action = action in (7, 8, 9)
 
     rate_field = Rate.ACTION_DICT.get(action, None)
-    if rate_field is None and not cutscene_action:
+    if rate_field is None and not cutscene_action and action != 10:
         return JsonResponse({'message': 'action not found'}, status=422)
 
     if cutscene_action:
