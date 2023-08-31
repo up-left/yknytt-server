@@ -13,7 +13,7 @@ class LevelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Level
-        fields = ('name', 'author', 'description', 'file_size', 'link', 'icon', 'downloads', 'upvotes', 'downvotes', 'complains', 'autoverified', 'status')
+        fields = ('name', 'author', 'description', 'file_size', 'link', 'icon', 'downloads', 'upvotes', 'downvotes', 'complains', 'autoverified', 'status', 'size', 'difficulty', 'category')
 
 
 class CutsceneSerializer(serializers.ModelSerializer):
