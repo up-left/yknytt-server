@@ -47,7 +47,7 @@ class Level(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=40, db_index=True)
     author = models.CharField(max_length=40, db_index=True)
-    description = models.CharField(max_length=512)
+    description = models.CharField(max_length=512, db_index=True)
 
     size = models.IntegerField(choices=SIZE_CHOICES, db_index=True)
     difficulty = ChoiceBitField(choices=DIFFICULTY_CHOICES, db_index=True)
