@@ -29,15 +29,15 @@ class LevelList(generics.ListAPIView):
             queryset = queryset.filter(size=int(size))
 
         difficulty = self.request.query_params.get('difficulty', None)
-        if difficulty:
+        if difficulty and int(difficulty) > 0:
             queryset = queryset.annotate(filt = F('difficulty').bitand(1 << int(difficulty))).filter(filt__gt=0)
-        if difficulty == 0:
+        if difficulty and int(difficulty) == 0:
             queryset = queryset.filter(difficulty=0)
 
         category = self.request.query_params.get('category', None)
-        if category:
+        if category and int(category) > 0:
             queryset = queryset.annotate(filt = F('category').bitand(1 << int(category))).filter(filt__gt=0)
-        if category == 0:
+        if category and int(category) == 0:
             queryset = queryset.filter(category=0)
 
         order = self.request.query_params.get('order', None)
