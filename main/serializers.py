@@ -30,5 +30,5 @@ class LevelRatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LevelRating
-        fields = ('downloads', 'upvotes', 'downvotes', 'complains', 'cutscenes',
+        fields = ('downloads', 'upvotes', 'downvotes', 'complains', 'completions', 'cutscenes',
             'power0', 'power1', 'power2', 'power3', 'power4', 'power5', 'power6', 'power7', 'power8', 'power9', 'power10', 'power11', 'power12')
