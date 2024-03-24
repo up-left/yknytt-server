@@ -66,7 +66,7 @@ class Level(models.Model):
 
 
 class LevelRating(models.Model):
-    STATUS_CHOICES = [(0, 'Not Verified'), (1, 'Hard to Verify'), (2, 'Broken'), (3, 'Almost Broken'), (4, 'Partially Playable'), (5, 'Almost Playable'), (6, 'Playable')]
+    STATUS_CHOICES = [(0, 'Not Verified'), (1, 'Unfinished'), (2, 'Broken'), (3, 'Almost Broken'), (4, 'Partially Playable'), (5, 'Almost Playable'), (6, 'Playable')]
     STATUS_CHOICES_DICT = dict(STATUS_CHOICES)
 
     level = models.OneToOneField(Level, on_delete=models.CASCADE, primary_key=True)
