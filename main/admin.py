@@ -8,11 +8,11 @@ class LevelAdmin(admin.ModelAdmin):
 
 @admin.register(models.LevelRating)
 class LevelRatingAdmin(admin.ModelAdmin):
-    ordering = ['level.author', 'level.name']
+    ordering = ['level__author', 'level__name']
 
 @admin.register(models.Cutscene)
 class CutsceneAdmin(admin.ModelAdmin):
-    ordering = ['level.author', 'level.name', 'name']
+    ordering = ['level__author', 'level__name', 'name']
 
 @admin.register(models.Rate)
 class RateAdmin(admin.ModelAdmin):
