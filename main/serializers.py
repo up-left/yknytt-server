@@ -11,6 +11,7 @@ class LevelSerializer(serializers.ModelSerializer):
     completions = serializers.IntegerField(source='levelrating.completions')
     autoverified = serializers.BooleanField(source='levelrating.verified')
     status = serializers.IntegerField(source='levelrating.status')
+    score = serializers.FloatField(source='levelrating.score')
 
     class Meta:
         model = Level
