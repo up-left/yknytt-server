@@ -17,7 +17,7 @@ class LevelSerializer(serializers.ModelSerializer):
         model = Level
         fields = ('name', 'author', 'description', 'file_size', 'link', 'icon',
                   'downloads', 'upvotes', 'downvotes', 'complains', 'completions',
-                  'autoverified', 'status', 'size', 'difficulty', 'category')
+                  'autoverified', 'status', 'score', 'size', 'difficulty', 'category')
 
 
 class CutsceneSerializer(serializers.ModelSerializer):
