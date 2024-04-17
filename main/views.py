@@ -100,7 +100,7 @@ def rate(request):
         if score_action:
             scores = {r.uid: r.action for r in Rate.objects.filter(level=level, action__gte=20, action__lte=30).order_by('uid', 'time')}.values()
             scores = [s for s in scores if s != 20]
-            score = (sum(scores) / len(scores) - 20) / 2
+            score = (sum(scores) / len(scores) - 20) / 2 if scores else 0
             LevelRating.objects.filter(level=level).update(score=score)
 
     return JsonResponse({'action': action, 'added': 1 if created else 0}, status=200)
