@@ -68,7 +68,7 @@ def rate(request):
     action = int(action)
     cutscene_action = action in (5, 6)
     launch_action = action in (7, 8, 9)
-    score_action = action > 20 and action <= 30
+    score_action = action >= 20 and action <= 30
 
     rate_field = Rate.ACTION_DICT.get(action, None)
     if rate_field is None and not cutscene_action and action != 10 and not score_action:
@@ -98,7 +98,7 @@ def rate(request):
                 LevelRating.objects.filter(level=level).update(verified=True)
 
         if score_action:
-            scores = {r.uid: r.action for r in Rate.objects.filter(level=level, action__gt=20, action__lte=30).order_by('uid', 'time')}.values()
+            scores = {r.uid: r.action for r in Rate.objects.filter(level=level, action__gte=20, action__lte=30).order_by('uid', 'time')}.values()
             scores = [s for s in scores if s != 20]
             score = (sum(scores) / len(scores) - 20) / 2
             LevelRating.objects.filter(level=level).update(score=score)
