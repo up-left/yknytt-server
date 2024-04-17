@@ -99,7 +99,7 @@ def rate(request):
 
         if score_action:
             scores = {r.uid: r.action for r in Rate.objects.filter(level=level, action__gt=20, action__lte=30).order_by('uid', 'time')}.values()
-            scores = filter(lambda s: s != 20, scores)
+            scores = [s for s in scores if s != 20]
             score = (sum(scores) / len(scores) - 20) / 2
             LevelRating.objects.filter(level=level).update(score=score)
 
