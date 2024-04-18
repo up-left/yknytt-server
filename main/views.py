@@ -15,7 +15,7 @@ class LevelList(generics.ListAPIView):
     serializer_class = LevelSerializer
     queryset = Level.objects.all()
 
-    ORDER_FIELDS = {3: 'name', 4: 'author', 5: '-levelrating__downloads', 6: '-levelrating__upvotes', 7: '-file_size'}
+    ORDER_FIELDS = {3: 'name', 4: 'author', 5: '-levelrating__downloads', 6: '-levelrating__upvotes', 7: '-file_size', 8: '-levelrating__score'}
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -42,7 +42,7 @@ class LevelList(generics.ListAPIView):
 
         order = self.request.query_params.get('order', None)
         if order:
-            queryset = queryset.order_by(LevelList.ORDER_FIELDS[int(order)], '-levelrating__status', 'pk')
+            queryset = queryset.order_by(LevelList.ORDER_FIELDS[int(order)], '-levelrating__score', 'pk')
 
         return queryset
 

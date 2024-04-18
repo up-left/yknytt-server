@@ -100,7 +100,7 @@ class LevelRating(models.Model):
     verified = models.BooleanField(default=False)
 
     def __str__(self):
-    	return f'{"[+]" if self.verified else "[ ]"}{self.winexits} {LevelRating.STATUS_CHOICES_DICT[self.status]} {self.level} {self.score:0.2}[{self.voters}] v{self.downloads}'
+    	return f'{"[+]" if self.verified else "[ ]"}[{self.winexits}] {LevelRating.STATUS_CHOICES_DICT[self.status]} {self.level} {self.score:0.2}[{self.voters}] v{self.downloads}'
 
 
 class Cutscene(models.Model):
