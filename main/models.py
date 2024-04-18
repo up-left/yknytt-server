@@ -95,11 +95,12 @@ class LevelRating(models.Model):
     power12 = models.IntegerField(default=0)
 
     score = models.FloatField(default=0)
+    voters = models.IntegerField(default=0)
     status = models.IntegerField(default=0, choices=STATUS_CHOICES)
     verified = models.BooleanField(default=False)
 
     def __str__(self):
-    	return f'{"[+]" if self.verified else "[ ]"} {LevelRating.STATUS_CHOICES_DICT[self.status]} {self.level} +{self.upvotes}/-{self.downvotes} v{self.downloads}'
+    	return f'{"[+]" if self.verified else "[ ]"}{self.winexits} {LevelRating.STATUS_CHOICES_DICT[self.status]} {self.level} {self.score:0.2}[{self.voters}] v{self.downloads}'
 
 
 class Cutscene(models.Model):
