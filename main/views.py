@@ -42,7 +42,7 @@ class LevelList(generics.ListAPIView):
 
         order = self.request.query_params.get('order', None)
         if order:
-            queryset = queryset.order_by(LevelList.ORDER_FIELDS[int(order)], '-levelrating__score', 'pk')
+            queryset = queryset.order_by(LevelList.ORDER_FIELDS[int(order)], '-levelrating__score', '-levelrating__downloads', 'pk')
 
         return queryset
 
