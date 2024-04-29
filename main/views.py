@@ -67,7 +67,7 @@ def rate(request):
     level = get_object_or_404(Level, name=level_name, author=level_author)
     action = int(action)
     cutscene_action = action in (5, 6)
-    launch_action = action in (7, 8, 9)
+    launch_action = action in (7, 8)
     score_action = action >= 20 and action <= 30
     completion_action = action >= 40 and action <= 45
 
