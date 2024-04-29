@@ -86,7 +86,7 @@ def rate(request):
         prev_rate = Rate.objects.filter(level=level, uid=uid, action__gte=40, action__lte=45).order_by('-time').first()
         if prev_rate:
             prev_rate_field = Rate.ACTION_DICT[prev_rate.action]
-            LevelRating.objects.filter(level=level).update(**{rate_field: F(rate_field) - 1})
+            LevelRating.objects.filter(level=level).update(**{prev_rate_field: F(prev_rate_field) - 1})
 
     if launch_action or score_action or completion_action:
         cutscene = str(time.time()) # to provide unique key

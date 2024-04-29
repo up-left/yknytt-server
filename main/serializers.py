@@ -8,7 +8,6 @@ class LevelSerializer(serializers.ModelSerializer):
     upvotes = serializers.IntegerField(source='levelrating.upvotes')
     downvotes = serializers.IntegerField(source='levelrating.downvotes')
     complains = serializers.IntegerField(source='levelrating.complains')
-    completions = serializers.IntegerField(source='levelrating.completions')
     autoverified = serializers.BooleanField(source='levelrating.verified')
     status = serializers.IntegerField(source='levelrating.status')
     score = serializers.FloatField(source='levelrating.score')
