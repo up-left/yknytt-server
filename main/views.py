@@ -69,7 +69,7 @@ def rate(request):
     cutscene_action = action in (5, 6)
     launch_action = action in (7, 8)
     score_action = action >= 20 and action <= 30
-    completion_action = action >= 40 and action <= 45
+    completion_action = action >= 40 and action <= 46
 
     rate_field = Rate.ACTION_DICT.get(action, None)
     if rate_field is None and not cutscene_action and action != 10 and not score_action:
@@ -83,10 +83,11 @@ def rate(request):
             return JsonResponse({'message': 'cutscene not found'}, status=422)
 
     if completion_action:
-        prev_rate = Rate.objects.filter(level=level, uid=uid, action__gte=40, action__lte=45).order_by('-time').first()
+        prev_rate = Rate.objects.filter(level=level, uid=uid, action__gte=40, action__lte=46).order_by('-time').first()
         if prev_rate:
             prev_rate_field = Rate.ACTION_DICT[prev_rate.action]
             LevelRating.objects.filter(level=level).update(**{prev_rate_field: F(prev_rate_field) - 1})
+            prev_rate.delete()
 
     if launch_action or score_action or completion_action:
         cutscene = str(time.time()) # to provide unique key

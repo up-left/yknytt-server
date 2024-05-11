@@ -98,7 +98,8 @@ class LevelRating(models.Model):
     backlogged = models.IntegerField(default=0)
     too_hard = models.IntegerField(default=0)
     not_interested = models.IntegerField(default=0)
-    bad_design = models.IntegerField(default=0)
+    cant_progress = models.IntegerField(default=0)
+    level_errors = models.IntegerField(default=0)
 
     score = models.FloatField(default=0)
     voters = models.IntegerField(default=0)
@@ -128,13 +129,13 @@ class Rate(models.Model):
                       (5, 'Cutscene'), (6, 'Ending'), (7, 'Enter'), (8, 'Exit'), (9, 'Win Exit'), (10, 'Cheat'), (11, 'Complete'),
                       (20, 'Clear rating'), (21, '0.5 star'), (22, 'One star'), (23, '1.5 stars'), (24, 'Two stars'), (25, '2.5 star'),
                       (26, 'Three stars'), (27, '3.5 stars'), (28, 'Four stars'), (29, '4.5 stars'), (30, 'Five stars'),
-                      (40, 'In progress'), (41, 'Completed'), (42, 'Backlog'), (43, 'Too hard'), (44, 'Not intereseted'), (45, 'Bad design'),
+                      (40, 'In progress'), (41, 'Completed'), (42, 'Backlog'), (43, 'Too hard'), (44, 'Not intereseted'), (45, "Can't progress"), (46, 'Level errors'),
                       (100, 'Run'), (101, 'Climb'), (102, 'Double Jump'), (103, 'High Jump'), (104, 'Eye'), (105, 'Enemy Detector'),
                       (106, 'Umbrella'), (107, 'Hologram'), (108, 'Red Key'), (109, 'Yellow Key'), (110, 'Blue Key'), (111, 'Purple Key'), (112, 'Map')]
     ACTION_CHOICES_DICT = dict(ACTION_CHOICES)
 
     ACTION_DICT = {1: 'downloads', 2: 'upvotes', 3: 'downvotes', 4: 'complains', 7: 'enters', 8: 'exits', 9: 'winexits', 11: 'completions',
-                   40: 'in_progress', 41: 'completions', 42: 'backlogged', 43: 'too_hard', 44: 'not_interested', 45: 'bad_design',
+                   40: 'in_progress', 41: 'completions', 42: 'backlogged', 43: 'too_hard', 44: 'not_interested', 45: 'cant_progress', 46: 'level_errors',
                    100: 'power0', 101: 'power1', 102: 'power2', 103: 'power3', 104: 'power4', 105: 'power5',
                    106: 'power6', 107: 'power7', 108: 'power8', 109: 'power9', 110: 'power10', 111: 'power11', 112: 'power12'}
 

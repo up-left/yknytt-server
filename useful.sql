@@ -55,3 +55,11 @@ from main_cutscene cut
 left join main_level as lvl on lvl.id = cut.level_id
 where level_id in (select level_id from main_levelrating where completions > 0 and verified = 0 and status <= 4)
 order by lvl.author, lvl.name, cut.name;
+
+# levels where some cutscenes were achieved and no endings (but they are exists)
+select author, ml.name, sum(if(ending, counter, 0)) e, sum(if(ending, 0, counter)) c, sum(if(ending, 1, 0)) t
+from main_cutscene mc
+left join main_level ml on ml.id = mc.level_id
+group by author, ml.name
+having t > 0 and e = 0 and c > 0
+order by c desc;
