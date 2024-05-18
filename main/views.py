@@ -105,6 +105,10 @@ def rate(request):
             if not Cutscene.objects.filter(level=level, ending=True, counter=0).exists():
                 LevelRating.objects.filter(level=level).update(verified=True)
 
+        if action in (6, 9):
+            if Rate.objects.filter(level=level, uid=uid, action=6).count() >= Cutscene.objects.filter(level=level, ending=True).count():
+                LevelRating.objects.filter(level=level).update(completions=F('completions') + 1)
+
     if score_action:
         scores = {r.uid: r.action for r in Rate.objects.filter(level=level, action__gte=20, action__lte=30).order_by('uid', 'time')}.values()
         scores = [s for s in scores if s != 20]
