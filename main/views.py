@@ -107,8 +107,10 @@ def rate(request):
 
         if action in (6, 9):
             if Rate.objects.filter(level=level, uid=uid, action=6).count() >= Cutscene.objects.filter(level=level, ending=True).count():
-                LevelRating.objects.filter(level=level).update(completions=F('completions') + 1)
-                Rate.objects.get_or_create({'name': level_name, 'author': level_author, 'platform': platform, 'ip': ip}, level=level, uid=uid, action=41)
+                _, complete_created = Rate.objects.get_or_create({'name': level_name, 'author': level_author, 'platform': platform, 'ip': ip},
+                        level=level, uid=uid, action=41)
+                if complete_created:
+                    LevelRating.objects.filter(level=level).update(completions=F('completions') + 1)
 
     if score_action:
         scores = {r.uid: r.action for r in Rate.objects.filter(level=level, action__gte=20, action__lte=30).order_by('uid', 'time')}.values()
