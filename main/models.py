@@ -32,7 +32,8 @@ class ChoiceBitField(models.IntegerField):
         return value if isinstance(value, int) else sum(1 << int(i) for i in value)
 
     def to_python(self, value):
-        return self.from_db_value(value, None, None) if isinstance(value, int) else [int(i) for i in value]
+        return self.from_db_value(value, None, None) if isinstance(value, int) else \
+                [int(v) for v in value[1:-1].split(', ')] if isinstance(value, str) else [int(i) for i in value]
 
 
 class Level(models.Model):

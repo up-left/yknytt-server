@@ -70,10 +70,15 @@ def rate(request):
     launch_action = action in (7, 8)
     score_action = action >= 20 and action <= 30
     completion_action = action >= 40 and action <= 46
+    power_action = action >= 100
 
     rate_field = Rate.ACTION_DICT.get(action, None)
     if rate_field is None and not cutscene_action and action != 10 and not score_action:
         return JsonResponse({'message': 'action not found'}, status=422)
+
+    if cutscene_action or power_action or action == 9:
+        if Rate.objects.filter(level=level, uid=uid, action=10).exists():
+            return JsonResponse({'message': 'previously cheated'}, status=422)
 
     if cutscene_action:
         if cutscene is None:
