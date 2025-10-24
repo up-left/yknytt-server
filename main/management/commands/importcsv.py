@@ -14,6 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         new_counter = 0
         total_counter = 0
+        all_levels = {lvl.id for lvl in Level.objects.all()}
 
         with open(options['filename'], 'rt') as f:
             reader = csv.reader(f)
@@ -38,6 +39,8 @@ class Command(BaseCommand):
                 if created:
                     new_counter += 1
                     LevelRating.objects.create(level=level)
+                else:
+                    all_levels.remove(level.id)
 
                 if created or options['update']:
                     cutscenes = row[9].split(';') if row[9] else []
@@ -54,3 +57,5 @@ class Command(BaseCommand):
                 total_counter += 1
 
         self.stdout.write(self.style.SUCCESS(f'Finished ({total_counter} rows total, {new_counter} rows new)'))
+        if options['update']:
+            self.stdout.write(self.style.SUCCESS(f'Levels not updated: {', '.join(f"#{i}" for i in a)}'))
