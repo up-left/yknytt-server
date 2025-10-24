@@ -58,4 +58,4 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS(f'Finished ({total_counter} rows total, {new_counter} rows new)'))
         if options['update']:
-            self.stdout.write(self.style.SUCCESS(f'Levels not updated: {', '.join(f"#{i}" for i in a)}'))
+            self.stdout.write(self.style.SUCCESS(f'Levels not updated: {", ".join(f"#{i}" for i in a)}'))
