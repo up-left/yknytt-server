@@ -40,6 +40,10 @@ class LevelList(generics.ListAPIView):
         if category and int(category) == 0:
             queryset = queryset.filter(category=1)
 
+        version = self.request.query_params.get('version', None)
+        if version and version == '0.6.9':
+            queryset = queryset.exclude(format=9)
+
         order = self.request.query_params.get('order', None)
         if order:
             queryset = queryset.order_by(LevelList.ORDER_FIELDS[int(order)], '-levelrating__score', '-levelrating__downloads', 'pk')
