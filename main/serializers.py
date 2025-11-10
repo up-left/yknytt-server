@@ -23,7 +23,7 @@ class LevelSerializer(serializers.ModelSerializer):
 class CutsceneSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cutscene
-        fields = ('name', 'ending', 'counter')
+        fields = ('name', 'ending', 'counter', 'final')
 
 
 class LevelRatingSerializer(serializers.ModelSerializer):

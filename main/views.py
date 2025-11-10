@@ -114,8 +114,10 @@ def rate(request):
             if not Cutscene.objects.filter(level=level, ending=True, counter=0).exists():
                 LevelRating.objects.filter(level=level).update(verified=True)
 
-    if action in (6, 9): # autocompletion
-        if Rate.objects.filter(level=level, uid=uid, action=6).count() >= Cutscene.objects.filter(level=level, ending=True).count():
+    if cutscene_action or action == 9: # autocompletion
+        final_cutscene = cutscene_action and cutscene_queryset.first().final
+        all_endings = action in (6, 9) and Rate.objects.filter(level=level, uid=uid, action=6).count() >= Cutscene.objects.filter(level=level, ending=True).count()
+        if final_cutscene or all_endings:
             prev_rate = Rate.objects.filter(level=level, uid=uid, action__gte=40, action__lte=46).order_by('-time').first()
             if prev_rate:
                 prev_rate_field = Rate.ACTION_DICT[prev_rate.action]

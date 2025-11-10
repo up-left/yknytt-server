@@ -117,6 +117,7 @@ class Cutscene(models.Model):
     name = models.CharField(max_length=64, db_index=True)
     ending = models.BooleanField()
     counter = models.IntegerField(default=0)
+    final = models.BooleanField(default=False)
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['level', 'name', 'ending'], name='unique_cutscene')]
