@@ -68,13 +68,20 @@ def rate(request):
     if level_name is None or level_author is None or uid is None or action is None:
         return JsonResponse({'message': 'missing parameter'}, status=422)
 
-    level = get_object_or_404(Level, name=level_name, author=level_author)
     action = int(action)
     cutscene_action = action in (5, 6)
     launch_action = action in (7, 8)
     score_action = action >= 20 and action <= 30
     completion_action = action >= 40 and action <= 46
     power_action = action >= 100
+
+    if action == 4:
+        _, created = Rate.objects.get_or_create(
+            {'name': level_name, 'author': level_author, 'platform': platform, 'ip': ip}, 
+            level=None, uid=uid, action=action, cutscene=cutscene)
+        return JsonResponse({'action': action, 'added': 1 if created else 0}, status=200)
+
+    level = get_object_or_404(Level, name=level_name, author=level_author)
 
     rate_field = Rate.ACTION_DICT.get(action, None)
     if rate_field is None and not cutscene_action and action != 10 and not score_action:
