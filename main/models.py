@@ -71,7 +71,7 @@ class LevelRating(models.Model):
     STATUS_CHOICES_DICT = dict(STATUS_CHOICES)
 
     level = models.OneToOneField(Level, on_delete=models.CASCADE, primary_key=True)
-    
+
     downloads = models.IntegerField(default=0)
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)
@@ -104,6 +104,7 @@ class LevelRating(models.Model):
 
     score = models.FloatField(default=0)
     voters = models.IntegerField(default=0)
+    content_warning = models.IntegerField(default=0)
     status = models.IntegerField(default=0, choices=STATUS_CHOICES)
     verified = models.BooleanField(default=False)
 
@@ -127,7 +128,7 @@ class Cutscene(models.Model):
 
 
 class Rate(models.Model):
-    ACTION_CHOICES = [(0, 'Undefined'), (1, 'Download'), (2, 'Upvote'), (3, 'Downvote'), (4, 'Complain'), 
+    ACTION_CHOICES = [(0, 'Undefined'), (1, 'Download'), (2, 'Upvote'), (3, 'Downvote'), (4, 'Complain'),
                       (5, 'Cutscene'), (6, 'Ending'), (7, 'Enter'), (8, 'Exit'), (9, 'Win Exit'), (10, 'Cheat'), (11, 'Complete'),
                       (20, 'Clear rating'), (21, '0.5 star'), (22, 'One star'), (23, '1.5 stars'), (24, 'Two stars'), (25, '2.5 star'),
                       (26, 'Three stars'), (27, '3.5 stars'), (28, 'Four stars'), (29, '4.5 stars'), (30, 'Five stars'),
@@ -156,4 +157,4 @@ class Rate(models.Model):
         constraints = [models.UniqueConstraint(fields=['uid', 'level', 'action', 'cutscene'], name='unique_user_rate')]
 
     def __str__(self):
-        return f'{Rate.ACTION_CHOICES_DICT[self.action]} {self.cutscene if self.action in (5, 6) else ""} #{self.level_id} {self.name} ({self.author}) {self.time.strftime("%Y.%m.%d %H:%M:%S")} {{{self.uid}}}'
+        return f'{Rate.ACTION_CHOICES_DICT[self.action]} {self.cutscene if self.action in (5, 6) else ""} #{self.level_id} {self.name} ({self.author}) {self.time.strftime("%Y.%m.%d %H:%M:%S")} {{{self.uid}}} {self.platform}'

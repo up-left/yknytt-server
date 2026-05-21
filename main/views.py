@@ -41,7 +41,7 @@ class LevelList(generics.ListAPIView):
             queryset = queryset.filter(category=1)
 
         version = self.request.query_params.get('version', None)
-        if version and version == '0.6.9':
+        if version and version >= '0.7.1':
             queryset = queryset.exclude(format=9)
 
         order = self.request.query_params.get('order', None)
@@ -77,7 +77,7 @@ def rate(request):
 
     if action == 4:
         _, created = Rate.objects.get_or_create(
-            {'name': level_name, 'author': level_author, 'platform': platform, 'ip': ip}, 
+            {'name': level_name, 'author': level_author, 'platform': platform, 'ip': ip},
             level=None, uid=uid, action=action, cutscene=cutscene)
         return JsonResponse({'action': action, 'added': 1 if created else 0}, status=200)
 
@@ -109,7 +109,7 @@ def rate(request):
         cutscene = str(time.time()) # to provide unique key
 
     _, created = Rate.objects.get_or_create(
-        {'name': level_name, 'author': level_author, 'platform': platform, 'ip': ip}, 
+        {'name': level_name, 'author': level_author, 'platform': platform, 'ip': ip},
         level=level, uid=uid, action=action, cutscene=cutscene)
     if created:
         if rate_field is not None:
